@@ -19,26 +19,38 @@ El objetivo es ofrecer una arquitectura clara, flexible y escalable, con integra
 
 ## 📂 Estructura del proyecto
 Conecta4byivazquezv/
-├── .gitignore
-├── README.md
-├── pom.xml                # Maven
-├── build/                 # Archivos compilados (ignorado en Git)
-├── dist/                  # Ejecutables .jar (ignorado en Git)
-├── nbproject/             # Configuración de NetBeans
-├── src/
-│   └── main/
-│       ├── java/
-│       │   └── com/
-│       │       └── ivazquezv/
-│       │           └── conecta4/
-│       │               ├── Main.java
-│       │               ├── Player.java
-│       │               ├── Board.java
-│       │               └── AIPlayer.java
-│       └── resources/    # Archivos de configuración o assets
-└── target/                # Carpeta generada por Maven (ignorada en Git)
 
+.gitignore
 
+README.md
+
+pom.xml → configuración de Maven
+
+build/ → archivos compilados (ignorado en Git)
+
+dist/ → ejecutables .jar (ignorado en Git)
+
+nbproject/ → configuración de NetBeans
+
+src/
+
+main/
+
+java/
+
+com.ivazquezv.conecta4/
+
+Main.java
+
+Player.java
+
+Board.java
+
+AIPlayer.java
+
+resources/ → archivos de configuración o assets
+
+target/ → carpeta generada por Maven
 
 ---
 
