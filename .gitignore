@@ -1,0 +1,26 @@
+# Compilados y binarios
+/build/
+dist/
+*.class
+*.jar
+*.war
+*.ear
+
+# Archivos de NetBeans
+/nbproject/private/
+/nbproject/configurations.xml
+
+# Archivos temporales
+*.log
+*.tmp
+*.bak
+
+# Configuración del sistema
+.DS_Store
+Thumbs.db
+
+# Configuración de IDEs
+*.iml
+.idea/
+.vscode/
+
