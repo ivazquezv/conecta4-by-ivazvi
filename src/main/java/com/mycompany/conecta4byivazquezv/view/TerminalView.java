@@ -38,9 +38,9 @@ public final class TerminalView {
                 
                 // Asignamos símbolo según el color de la celda
                 String symbol = switch (color) {
-                    case RED -> ANSI_RED + "R" + ANSI_RESET;       // Ficha roja
-                    case YELLOW -> ANSI_YELLOW + "Y" + ANSI_RESET; // Ficha amarilla
-                    default -> " ";                                // Celda vacía
+                    case RED -> ANSI_RED + "O" + ANSI_RESET;       // Ficha roja
+                    case YELLOW -> ANSI_YELLOW + "X" + ANSI_RESET; // Ficha amarilla
+                    default -> "_";                                // Celda vacía
                 };
                 
                 // Imprimimos celda con separadores

@@ -1,9 +1,13 @@
-
 package com.mycompany.conecta4byivazquezv.rules;
 
 import com.mycompany.conecta4byivazquezv.model.Board;
 import com.mycompany.conecta4byivazquezv.model.DiscColor;
 import com.mycompany.conecta4byivazquezv.model.GameResult;
+
+/**
+ * Regla de victoria para comprobar diagonales en el tablero.
+ * Evalúa tanto diagonales descendentes (\) como ascendentes (/).
+ */
 public final class DiagonalWinRule extends BaseWinRule {
 
     @Override
@@ -22,27 +26,41 @@ public final class DiagonalWinRule extends BaseWinRule {
         return next(board, color, row, col);
     }
 
+    /**
+     * Comprueba si hay al menos 4 fichas consecutivas en una diagonal
+     * a partir de la posición indicada.
+     *
+     * @param board tablero
+     * @param color color de la ficha a comprobar
+     * @param row fila inicial
+     * @param col columna inicial
+     * @param rowDir dirección de fila (+1 descendente, -1 ascendente)
+     * @param colDir dirección de columna (+1 derecha, -1 izquierda)
+     * @return true si hay 4 o más consecutivas, false en caso contrario
+     */
     private boolean checkDiagonal(Board board, DiscColor color, int row, int col, int rowDir, int colDir) {
         int count = 1; // incluye la ficha recién colocada
 
-        // Hacia adelante
-        int r = row + rowDir;
-        int c = col + colDir;
-        while (r >= 0 && r < Board.ROWS && c >= 0 && c < Board.COLS &&
-               board.getGrid()[r][c].getColor() == color) {
+        // Avanzar en la dirección indicada
+        int currentRow = row + rowDir;
+        int currentCol = col + colDir;
+        while (currentRow >= 0 && currentRow < Board.ROWS &&
+               currentCol >= 0 && currentCol < Board.COLS &&
+               board.getGrid()[currentRow][currentCol].getColor() == color) {
             count++;
-            r += rowDir;
-            c += colDir;
+            currentRow += rowDir;
+            currentCol += colDir;
         }
 
-        // Hacia atrás
-        r = row - rowDir;
-        c = col - colDir;
-        while (r >= 0 && r < Board.ROWS && c >= 0 && c < Board.COLS &&
-               board.getGrid()[r][c].getColor() == color) {
+        // Retroceder en la dirección opuesta
+        currentRow = row - rowDir;
+        currentCol = col - colDir;
+        while (currentRow >= 0 && currentRow < Board.ROWS &&
+               currentCol >= 0 && currentCol < Board.COLS &&
+               board.getGrid()[currentRow][currentCol].getColor() == color) {
             count++;
-            r -= rowDir;
-            c -= colDir;
+            currentRow -= rowDir;
+            currentCol -= colDir;
         }
 
         return count >= 4;

@@ -43,4 +43,12 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.doolse</groupId>
+            <artifactId>simpledba-core_2.12</artifactId>
+            <version>0.1.9</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
 </project>

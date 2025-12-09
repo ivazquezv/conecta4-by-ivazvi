@@ -1,23 +1,32 @@
-
 package com.mycompany.conecta4byivazquezv.controller;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque; // representa una estructura de datos donde puedes insertar y eliminar elementos por ambos extremos (inicio y fin)
 
 /**
  * Maneja el historial de comandos para permitir undo/redo.
+ * 
+ * Usa dos pilas:
+ * - executed: comandos ya ejecutados (para poder deshacer).
+ * - undone: comandos deshechos (para poder rehacer).
  */
 public final class CommandHistory {
-    private final Stack<Command> executed = new Stack<>();
-    private final Stack<Command> undone = new Stack<>();
+    private final Deque<Command> executed = new ArrayDeque<>();
+    private final Deque<Command> undone = new ArrayDeque<>();
 
     /**
      * Ejecuta un comando y lo guarda en el historial.
+     * Ya no se limpia automáticamente la pila de redo,
+     * permitiendo rehacer incluso tras nuevas jugadas.
      */
     public void execute(Command cmd) {
-        cmd.execute();
-        executed.push(cmd);
-        // Al ejecutar un nuevo comando, se limpia la pila de redo
-        undone.clear();
+        try {
+            cmd.execute();
+            executed.addLast(cmd);
+            // ⚠️ Antes se hacía undone.clear(), ahora se mantiene
+        } catch (Exception e) {
+            System.err.println("Error al ejecutar comando: " + e.getMessage());
+        }
     }
 
     /**
@@ -25,9 +34,13 @@ public final class CommandHistory {
      */
     public void undo() {
         if (!executed.isEmpty()) {
-            Command cmd = executed.pop();
-            cmd.undo();
-            undone.push(cmd);
+            Command cmd = executed.removeLast();
+            try {
+                cmd.undo();
+                undone.addLast(cmd);
+            } catch (Exception e) {
+                System.err.println("Error al deshacer comando: " + e.getMessage());
+            }
         }
     }
 
@@ -36,9 +49,13 @@ public final class CommandHistory {
      */
     public void redo() {
         if (!undone.isEmpty()) {
-            Command cmd = undone.pop();
-            cmd.execute();
-            executed.push(cmd);
+            Command cmd = undone.removeLast();
+            try {
+                cmd.execute();
+                executed.addLast(cmd);
+            } catch (Exception e) {
+                System.err.println("Error al rehacer comando: " + e.getMessage());
+            }
         }
     }
 
@@ -54,5 +71,14 @@ public final class CommandHistory {
      */
     public boolean canRedo() {
         return !undone.isEmpty();
+    }
+
+    /**
+     * Limpia todo el historial de comandos (undo/redo).
+     * Se usa al iniciar una nueva partida para empezar fresco.
+     */
+    public void clear() {
+        executed.clear();
+        undone.clear();
     }
 }

@@ -1,5 +1,8 @@
 com\mycompany\conecta4byivazquezv\controller\GameController$1.class
+com\mycompany\conecta4byivazquezv\controller\GameSetup.class
+com\mycompany\conecta4byivazquezv\controller\UndoCommand.class
 com\mycompany\conecta4byivazquezv\rules\WinRule.class
+com\mycompany\conecta4byivazquezv\model\MatchResult.class
 com\mycompany\conecta4byivazquezv\view\Renderer.class
 com\mycompany\conecta4byivazquezv\rules\BaseWinRule.class
 com\mycompany\conecta4byivazquezv\view\TerminalView.class
@@ -7,6 +10,7 @@ com\mycompany\conecta4byivazquezv\ai\Strategy.class
 com\mycompany\conecta4byivazquezv\view\TerminalView$1.class
 com\mycompany\conecta4byivazquezv\ai\RandomStrategy.class
 com\mycompany\conecta4byivazquezv\model\Cell.class
+com\mycompany\conecta4byivazquezv\ai\HeuristicStrategy.class
 com\mycompany\conecta4byivazquezv\controller\CommandHistory.class
 com\mycompany\conecta4byivazquezv\rules\VerticalWinRule.class
 com\mycompany\conecta4byivazquezv\rules\RuleEngine.class
@@ -19,8 +23,10 @@ com\mycompany\conecta4byivazquezv\model\GameResult.class
 com\mycompany\conecta4byivazquezv\model\Move.class
 com\mycompany\conecta4byivazquezv\rules\HorizontalWinRule.class
 com\mycompany\conecta4byivazquezv\rules\DiagonalWinRule.class
+com\mycompany\conecta4byivazquezv\controller\RedoCommand.class
 com\mycompany\conecta4byivazquezv\controller\DropDiscCommand.class
 com\mycompany\conecta4byivazquezv\model\Board.class
 com\mycompany\conecta4byivazquezv\ai\MinimaxStrategy.class
+com\mycompany\conecta4byivazquezv\model\Ranking.class
 com\mycompany\conecta4byivazquezv\model\Player.class
 com\mycompany\conecta4byivazquezv\controller\Command.class

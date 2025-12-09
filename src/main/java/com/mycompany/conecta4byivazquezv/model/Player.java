@@ -23,7 +23,9 @@ public final class Player {
      * @param color color de las fichas asignadas
      */
     public Player(String name, DiscColor color) {
-        this.name = name;
+        this.name = (name == null || name.isBlank())
+                ? (color == DiscColor.RED ? "Jugador Rojo" : "Jugador Amarillo")
+                : name;
         this.color = color;
         this.ai = false;
         this.strategy = null;
@@ -36,42 +38,40 @@ public final class Player {
      * @param strategy estrategia de IA que utilizará
      */
     public Player(String name, DiscColor color, Strategy strategy) {
-        this.name = name;
+        this.name = (name == null || name.isBlank())
+                ? "Bot " + (color == DiscColor.RED ? "Rojo" : "Amarillo")
+                : name;
         this.color = color;
         this.ai = true;
         this.strategy = strategy;
     }
 
-    /**
-     * Devuelve el nombre del jugador.
-     * @return nombre
-     */
+    /** Devuelve el nombre del jugador. */
     public String getName() { 
         return name; 
     }
 
-    /**
-     * Devuelve el color de las fichas del jugador.
-     * @return color (DiscColor)
-     */
+    /** Devuelve el color de las fichas del jugador. */
     public DiscColor getColor() { 
         return color; 
     }
 
-    /**
-     * Indica si el jugador es IA.
-     * @return true si es IA, false si es humano
-     */
+    /** Indica si el jugador es IA. */
     public boolean isAi() { 
         return ai; 
     }
 
-    /**
-     * Devuelve la estrategia asociada al jugador IA.
-     * Si el jugador es humano, devuelve null.
-     * @return estrategia de IA o null si es humano
-     */
+    /** Devuelve la estrategia asociada al jugador IA (o null si es humano). */
     public Strategy getStrategy() {
         return strategy;
+    }
+
+    /**
+     * Devuelve una representación lista para mostrar en la interfaz:
+     * "Nombre (COLOR)".
+     * Ejemplo: "Iván (RED)" o "Bot Amarillo (YELLOW)".
+     */
+    public String getDisplayName() {
+        return name + " (" + color + ")";
     }
 }

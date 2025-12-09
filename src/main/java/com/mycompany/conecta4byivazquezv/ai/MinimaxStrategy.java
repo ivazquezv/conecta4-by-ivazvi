@@ -12,142 +12,159 @@ import java.util.Random;
 
 /**
  * Estrategia de IA basada en el algoritmo Minimax.
- * Explora posibles jugadas hasta cierta profundidad y selecciona la mejor
- * en función de una evaluación heurística.
- * 
- * Ahora incluye aleatorización en caso de empate entre varias jugadas óptimas.
+ * Versión simplificada: sin constantes de puntuación,
+ * usando valores directos en la evaluación.
  */
 public final class MinimaxStrategy implements Strategy {
+
     // Profundidad máxima de búsqueda en el árbol de jugadas
-    private final int depth;
-    // Motor de reglas para evaluar estados del tablero (victorias, etc.)
+    private final int maxDepth;
+    // Motor de reglas que evalúa si hay victoria, derrota o empate
     private final RuleEngine rules = new RuleEngine();
-    // Generador de aleatoriedad para romper empates
+    // Generador aleatorio para elegir entre jugadas con la misma puntuación
     private final Random random = new Random();
 
-    /**
-     * Constructor que recibe la profundidad de búsqueda.
-     * @param depth número de niveles de jugadas a simular
-     */
+    // Constructor: recibe la profundidad máxima de búsqueda
     public MinimaxStrategy(int depth) {
-        this.depth = depth;
+        this.maxDepth = depth;
     }
 
     /**
-     * Elige la mejor columna para jugar según el algoritmo minimax.
-     * Si varias columnas tienen la misma puntuación, se elige una al azar.
-     * 
-     * @param board tablero actual
-     * @param player jugador que realiza la jugada
-     * @return índice de columna elegido
+     * Método principal que elige la columna donde la IA jugará.
+     * Explora todas las columnas posibles y usa minimax para evaluarlas.
      */
     @Override
     public int chooseColumn(Board board, Player player) {
-        List<Integer> bestMoves = new ArrayList<>();
-        int bestScore = Integer.MIN_VALUE;
+        List<Integer> bestMoves = new ArrayList<>(); // Lista de columnas candidatas
+        int bestScore = Integer.MIN_VALUE;           // Mejor puntuación encontrada
 
-        // Iterar sobre todas las columnas posibles
-        for (int c = 0; c < Board.COLS; c++) {
-            if (!board.isColumnFull(c)) {
-                // Simular jugada del jugador en la columna c
-                board.dropDisc(c, player.getColor());
-                // Evaluar resultado con minimax recursivo
-                int score = minimax(board, depth - 1, false, player.getColor());
-                // Deshacer jugada simulada
-                board.removeDisc(c);
+        // Recorremos todas las columnas del tablero
+        for (int column = 0; column < Board.COLS; column++) {
+            // Solo consideramos columnas que no estén llenas
+            if (!board.isColumnFull(column)) {
+                // Simulamos colocar la ficha del jugador en esa columna
+                board.dropDisc(column, player.getColor());
 
-                // Actualizar lista de mejores jugadas
+                // Evaluamos la jugada con minimax (profundidad reducida en 1)
+                int score = minimax(board, maxDepth - 1, false, player.getColor());
+
+                // Deshacemos la jugada simulada
+                board.removeDisc(column);
+
+                // Si la puntuación es mejor que la actual, actualizamos
                 if (score > bestScore) {
                     bestScore = score;
-                    bestMoves.clear();
-                    bestMoves.add(c);
+                    bestMoves.clear();      // Limpiamos lista de mejores jugadas
+                    bestMoves.add(column);  // Añadimos esta columna como mejor
                 } else if (score == bestScore) {
-                    bestMoves.add(c);
+                    // Si la puntuación es igual, añadimos la columna como empate
+                    bestMoves.add(column);
                 }
             }
         }
 
-        // Elegir aleatoriamente entre las mejores jugadas
+        // Elegimos aleatoriamente entre las mejores jugadas encontradas
         return bestMoves.get(random.nextInt(bestMoves.size()));
     }
 
     /**
      * Algoritmo recursivo Minimax.
+     * Simula jugadas futuras alternando entre la IA (maximizing) y el oponente (minimizing).
      */
     private int minimax(Board board, int depth, boolean maximizing, DiscColor aiColor) {
+        // Evaluamos si el tablero está en estado de victoria/derrota
         GameResult result = rules.evaluate(board, aiColor, 0, 0);
+
         if (result == GameResult.RED_WINS || result == GameResult.YELLOW_WINS) {
-            return (result == (aiColor == DiscColor.RED ? GameResult.RED_WINS : GameResult.YELLOW_WINS)) ? 1000 : -1000;
+            if (result == (aiColor == DiscColor.RED ? GameResult.RED_WINS : GameResult.YELLOW_WINS)) {
+                // Si la IA gana → cuanto antes mejor (valor alto)
+                return 100 - (maxDepth - depth);
+            } else {
+                // Si la IA pierde → cuanto más tarde mejor (valor bajo)
+                return -100 + (maxDepth - depth);
+            }
         }
+
+        // Si llegamos a la profundidad máxima o el tablero está lleno, evaluamos heurísticamente
         if (depth == 0 || isBoardFull(board)) {
             return evaluateBoard(board, aiColor);
         }
 
-        if (maximizing) {
-            int maxEval = Integer.MIN_VALUE;
-            for (int c = 0; c < Board.COLS; c++) {
-                if (!board.isColumnFull(c)) {
-                    board.dropDisc(c, aiColor);
-                    int eval = minimax(board, depth - 1, false, aiColor);
-                    board.removeDisc(c);
-                    maxEval = Math.max(maxEval, eval);
-                }
+        // Inicializamos el mejor valor según si maximizamos o minimizamos
+        int bestValue = maximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        // Determinamos de quién es el turno (IA u oponente)
+        DiscColor currentColor = maximizing ? aiColor : getOpponent(aiColor);
+
+        // Recorremos todas las columnas posibles
+        for (int column = 0; column < Board.COLS; column++) {
+            if (!board.isColumnFull(column)) {
+                // Simulamos colocar ficha
+                board.dropDisc(column, currentColor);
+
+                // Llamada recursiva alternando maximizing/minimizing
+                int eval = minimax(board, depth - 1, !maximizing, aiColor);
+
+                // Deshacemos jugada
+                board.removeDisc(column);
+
+                // Actualizamos mejor valor según si maximizamos o minimizamos
+                bestValue = maximizing ? Math.max(bestValue, eval) : Math.min(bestValue, eval);
             }
-            return maxEval;
-        } else {
-            int minEval = Integer.MAX_VALUE;
-            DiscColor opponent = (aiColor == DiscColor.RED) ? DiscColor.YELLOW : DiscColor.RED;
-            for (int c = 0; c < Board.COLS; c++) {
-                if (!board.isColumnFull(c)) {
-                    board.dropDisc(c, opponent);
-                    int eval = minimax(board, depth - 1, true, aiColor);
-                    board.removeDisc(c);
-                    minEval = Math.min(minEval, eval);
-                }
-            }
-            return minEval;
         }
+        return bestValue;
     }
 
+    // Devuelve el color del oponente
+    private DiscColor getOpponent(DiscColor color) {
+        return (color == DiscColor.RED) ? DiscColor.YELLOW : DiscColor.RED;
+    }
+
+    // Comprueba si el tablero está lleno
     private boolean isBoardFull(Board board) {
-        for (int c = 0; c < Board.COLS; c++) {
-            if (!board.isColumnFull(c)) return false;
+        for (int column = 0; column < Board.COLS; column++) {
+            if (!board.isColumnFull(column)) return false;
         }
         return true;
     }
 
+    /**
+     * Evaluación heurística simplificada del tablero.
+     * Cada ficha propia suma +1, pares consecutivos suman +2.
+     */
     private int evaluateBoard(Board board, DiscColor aiColor) {
         int score = 0;
-        DiscColor[][] grid = new DiscColor[Board.ROWS][Board.COLS];
-        for (int r = 0; r < Board.ROWS; r++) {
-            for (int c = 0; c < Board.COLS; c++) {
-                grid[r][c] = board.getGrid()[r][c].getColor();
-                if (grid[r][c] == aiColor) {
-                    score += 5;
+        var grid = board.getGrid(); // Obtenemos la matriz de celdas
+
+        // Recorremos todas las filas y columnas
+        for (int row = 0; row < Board.ROWS; row++) {
+            for (int column = 0; column < Board.COLS; column++) {
+                // Si la celda pertenece a la IA, sumamos 1
+                if (grid[row][column].getColor() == aiColor) {
+                    score += 1;
                 }
             }
         }
 
-        // Evaluar alineaciones horizontales y verticales
-        for (int r = 0; r < Board.ROWS; r++) {
-            for (int c = 0; c < Board.COLS - 1; c++) {
-                if (grid[r][c] == aiColor && grid[r][c + 1] == aiColor) score += 20;
-            }
-        }
-        for (int c = 0; c < Board.COLS; c++) {
-            for (int r = 0; r < Board.ROWS - 1; r++) {
-                if (grid[r][c] == aiColor && grid[r + 1][c] == aiColor) score += 20;
-            }
-        }
-
-        // Evaluar diagonales simples (tríos)
-        for (int r = 0; r < Board.ROWS - 2; r++) {
-            for (int c = 0; c < Board.COLS - 2; c++) {
-                if (grid[r][c] == aiColor && grid[r + 1][c + 1] == aiColor && grid[r + 2][c + 2] == aiColor) score += 50;
-                if (grid[r + 2][c] == aiColor && grid[r + 1][c + 1] == aiColor && grid[r][c + 2] == aiColor) score += 50;
+        // Evaluamos pares horizontales
+        for (int row = 0; row < Board.ROWS; row++) {
+            for (int column = 0; column < Board.COLS - 1; column++) {
+                if (grid[row][column].getColor() == aiColor &&
+                    grid[row][column + 1].getColor() == aiColor) {
+                    score += 2;
+                }
             }
         }
 
-        return score;
+        // Evaluamos pares verticales
+        for (int column = 0; column < Board.COLS; column++) {
+            for (int row = 0; row < Board.ROWS - 1; row++) {
+                if (grid[row][column].getColor() == aiColor &&
+                    grid[row + 1][column].getColor() == aiColor) {
+                    score += 2;
+                }
+            }
+        }
+
+        return score; // Devolvemos la puntuación total
     }
 }

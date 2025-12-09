@@ -71,4 +71,29 @@ public final class Board {
     public Cell[][] getGrid() {
         return grid;
     }
+
+/**
+ * Comprueba si el tablero está lleno (sin columnas disponibles).
+ * @return true si todas las columnas están llenas, false en caso contrario
+ */
+public boolean isFull() {
+    for (int c = 0; c < COLS; c++) {
+        if (!isColumnFull(c)) {
+            return false; // encontramos una columna con espacio
+        }
+    }
+    return true; // todas las columnas están llenas
+}
+
+     /**
+     * Limpia el tablero, dejando todas las celdas vacías.
+     */
+    public void clear() {
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                grid[row][col] = new Cell(); // crea celda vacía
+            }
+        }
+    }
+
 }

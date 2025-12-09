@@ -34,7 +34,7 @@ public final class PlayerFactory {
      * @param color color de la ficha
      * @return instancia de Player IA con estrategia Minimax
      */
-    public static Player createAI(String name, DiscColor color) {
+    public static Player createAI(String name, DiscColor color, int nivelIA) {
         Strategy strategy = new MinimaxStrategy(4); // profundidad configurable
         return new Player(name, color, strategy);
     }

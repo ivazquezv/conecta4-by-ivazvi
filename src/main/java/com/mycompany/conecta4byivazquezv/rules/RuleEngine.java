@@ -1,10 +1,14 @@
-
 package com.mycompany.conecta4byivazquezv.rules;
 
 import com.mycompany.conecta4byivazquezv.model.Board;
 import com.mycompany.conecta4byivazquezv.model.DiscColor;
 import com.mycompany.conecta4byivazquezv.model.GameResult;
 
+/**
+ * Motor de reglas del juego Conecta4.
+ * Utiliza el patrón Chain of Responsibility para evaluar
+ * condiciones de victoria en orden: horizontal → vertical → diagonal.
+ */
 public final class RuleEngine {
     private final WinRule chain;
 
@@ -14,7 +18,7 @@ public final class RuleEngine {
         WinRule vertical = new VerticalWinRule();
         WinRule diagonal = new DiagonalWinRule();
 
-        // Encadenamos las reglas
+        // Encadenamos las reglas (forma segura)
         horizontal.setNext(vertical);
         vertical.setNext(diagonal);
 
