@@ -1,56 +1,28 @@
-# 🎮 Conecta4 by Iván Vázquez
+# Conecta4 by Ivazvi 🎮
 
-Proyecto educativo y técnico para implementar el clásico juego **Conecta4** en Java, con soporte para:
-- 👤 Humano vs Humano
-- 🤖 Humano vs IA
-- 🤖 vs 🤖 IA 
+Un proyecto en **Java** desarrollado con **NetBeans**, que implementa el clásico juego **Conecta 4** con estrategias heurísticas y soporte para ranking de partidas.
 
-Incluye arquitectura modular, renderizado en consola con colores ANSI y estrategias de IA basadas en **Minimax** y **Random**.
-
----
-
-## 🚀 Características principales
-- Tablero de 6x7 con representación visual en consola.
-- Controlador (`GameController`) que gestiona turnos, reglas y flujo de partida.
-- Vista en consola (`TerminalView`) con renderizado en colores ANSI.
-- Jugadores humanos e IA (`Player`) con soporte para distintas estrategias.
-- IA configurable:
-  - `RandomStrategy`: movimientos aleatorios.
-  - `MinimaxStrategy`: búsqueda recursiva con heurística y aleatorización en empates.
-- Fábrica de jugadores (`PlayerFactory`) para simplificar la creación de humanos e IA.
-- Motor de reglas (`RuleEngine`) para detectar victorias y empates.
-
----
+## 🚀 Características
+- Juego de Conecta 4 con interfaz en consola.
+- Estrategias heurísticas para IA (evaluación de jugadas).
+- Soporte de **undo/redo** en el flujo de entrada.
+- Ranking de partidas ordenado por victorias y rapidez (minutos y segundos).
+- Arquitectura modular con separación de responsabilidades (controlador, vista, modelo).
+- Enfoque en claridad, accesibilidad y experiencia de usuario.
 
 ## 📂 Estructura del proyecto
-# Estructura del proyecto
+- `src/` → Código fuente principal.
+- `nbproject/` → Configuración de NetBeans.
+- `build/` y `dist/` → Archivos generados automáticamente (se excluyen con `.gitignore`).
+- `README.md` → Este archivo.
 
-- **model/**
-  - Board
-  - Cell
-  - Player
-  - *DiscColor* (enum)
-  - Move
-  - *GameResult* (enum)
+## 🛠️ Requisitos
+- **Java 17+** (recomendado).
+- **NetBeans IDE** o cualquier editor compatible con proyectos Maven/Ant.
+- Git para control de versiones.
 
-- **rules/**
-  - WinRule
-  - HorizontalWinRule
-  - VerticalWinRule
-  - DiagonalWinRule
-  - RuleEngine
+## ▶️ Ejecución
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/ivazquezv/conecta4-by-ivazvi.git
 
-- **controller/**
-  - GameController
-  - *Command* (interfaz)
-  - DropDiscCommand (comando concreto)
-  - CommandHistory (undo/redo)
-
-- **view/**
-  - TerminalView
-  - Renderer
-
-- **ai/**
-  - *Strategy* (interfaz)
-  - RandomStrategy
-  - MinimaxStrategy
