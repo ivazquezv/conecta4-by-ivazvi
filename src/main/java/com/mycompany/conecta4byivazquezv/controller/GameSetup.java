@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class GameSetup {
 
+<<<<<<< HEAD
     // Scanner para leer entradas desde la consola
     private final Scanner sc = new Scanner(System.in);
 
@@ -18,6 +19,11 @@ public class GameSetup {
      */
     public Player[] configurePlayers() {
         // Mensajes iniciales de bienvenida e instrucciones
+=======
+    private final Scanner sc = new Scanner(System.in);
+
+    public Player[] configurePlayers() {
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
         System.out.println();
         System.out.println("=== Bienvenido a Conecta4 ===");
         System.out.println("Instrucciones iniciales:");
@@ -30,6 +36,7 @@ public class GameSetup {
         System.out.println("2. Humano vs IA");
         System.out.println("3. IA vs IA");
 
+<<<<<<< HEAD
         // Leer opción elegida por el usuario
         int opcion = leerOpcion();
 
@@ -49,12 +56,34 @@ public class GameSetup {
             case 3 -> {
                 int nivelIA1 = seleccionarNivelIA("Rojo");     // Nivel IA para jugador rojo
                 int nivelIA2 = seleccionarNivelIA("Amarillo"); // Nivel IA para jugador amarillo
+=======
+        int opcion = leerOpcion();
+
+        return switch (opcion) {
+            case 1 -> new Player[]{
+                crearJugadorHumano(DiscColor.RED),
+                crearJugadorHumano(DiscColor.YELLOW)
+            };
+            case 2 -> {
+                int nivelIA = seleccionarNivelIA();
+                yield new Player[]{
+                    crearJugadorHumano(DiscColor.RED),
+                    PlayerFactory.createAI("Bot Amarillo", DiscColor.YELLOW, nivelIA)
+                };
+            }
+            case 3 -> {
+                int nivelIA1 = seleccionarNivelIA("Rojo");
+                int nivelIA2 = seleccionarNivelIA("Amarillo");
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
                 yield new Player[]{
                     PlayerFactory.createAI("Bot Rojo", DiscColor.RED, nivelIA1),
                     PlayerFactory.createAI("Bot Amarillo", DiscColor.YELLOW, nivelIA2)
                 };
             }
+<<<<<<< HEAD
             // Si la entrada es inválida, por defecto Humano vs Humano
+=======
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
             default -> new Player[]{
                 crearJugadorHumano(DiscColor.RED),
                 crearJugadorHumano(DiscColor.YELLOW)
@@ -62,10 +91,13 @@ public class GameSetup {
         };
     }
 
+<<<<<<< HEAD
     /**
      * Lee la opción de modo de juego desde consola.
      * Si la entrada no es válida, devuelve 1 (Humano vs Humano).
      */
+=======
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     private int leerOpcion() {
         try {
             System.out.print("Opción: ");
@@ -76,10 +108,13 @@ public class GameSetup {
         }
     }
 
+<<<<<<< HEAD
     /**
      * Crea un jugador humano pidiendo su nombre por consola.
      * Si no se introduce nada, se asigna un nombre por defecto.
      */
+=======
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     private Player crearJugadorHumano(DiscColor color) {
         System.out.printf("Introduce el nombre para el jugador %s (%s): ",
                 color == DiscColor.RED ? "Rojo" : "Amarillo", color);
@@ -90,14 +125,18 @@ public class GameSetup {
         return PlayerFactory.createHuman(nombre, color);
     }
 
+<<<<<<< HEAD
     /**
      * Selecciona el nivel de dificultad de la IA.
      * Sobrecarga sin etiqueta (para un solo jugador IA).
      */
+=======
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     private int seleccionarNivelIA() {
         return seleccionarNivelIA("");
     }
 
+<<<<<<< HEAD
     /**
      * Selecciona el nivel de dificultad de la IA con etiqueta (Rojo/Amarillo).
      * Niveles disponibles:
@@ -105,6 +144,8 @@ public class GameSetup {
      * 2. Medio (Heurístico)
      * 3. Difícil (Minimax)
      */
+=======
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     private int seleccionarNivelIA(String etiqueta) {
         System.out.println("Selecciona nivel de IA " + (etiqueta.isEmpty() ? "" : "(" + etiqueta + ")") + ":");
         System.out.println("1. Fácil (Random)");

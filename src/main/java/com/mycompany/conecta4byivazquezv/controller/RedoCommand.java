@@ -1,9 +1,14 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
 package com.mycompany.conecta4byivazquezv.controller;
 
 import com.mycompany.conecta4byivazquezv.model.Move;
 
 /**
  * Comando del sistema que rehace la última jugada deshecha usando CommandHistory.
+<<<<<<< HEAD
  * Forma parte del patrón Command, encapsulando la acción de "rehacer".
  */
 public final class RedoCommand implements Command {
@@ -11,12 +16,19 @@ public final class RedoCommand implements Command {
     private final CommandHistory history;
 
     // Constructor: recibe el historial para poder operar sobre él
+=======
+ */
+public final class RedoCommand implements Command {
+    private final CommandHistory history;
+
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     public RedoCommand(CommandHistory history) {
         this.history = history;
     }
 
     /**
      * Ejecuta la operación de rehacer en el historial.
+<<<<<<< HEAD
      * - Comprueba si hay jugadas disponibles para rehacer.
      * - Si las hay, llama a history.redo().
      * - No devuelve un Move porque no se crea una jugada nueva,
@@ -39,6 +51,26 @@ public final class RedoCommand implements Command {
     public void undo() {
         if (history.canUndo()) {   // ¿Hay jugadas para deshacer?
             history.undo();        // Revierte la jugada rehecha
+=======
+     * No crea una jugada de tablero, por eso devuelve null.
+     */
+    @Override
+    public Move execute() {
+        if (history.canRedo()) {
+            history.redo();
+        }
+        return null;
+    }
+
+    /**
+     * Deshace el efecto de este comando de sistema,
+     * que equivale a deshacer (undo) lo que se rehizo.
+     */
+    @Override
+    public void undo() {
+        if (history.canUndo()) {
+            history.undo();
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
         }
     }
 }

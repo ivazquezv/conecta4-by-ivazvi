@@ -1,7 +1,12 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
 package com.mycompany.conecta4byivazquezv.controller;
 
 import com.mycompany.conecta4byivazquezv.model.Move;
 
+<<<<<<< HEAD
 /**
  * La interfaz Command define el contrato para implementar el patrón Command
  * dentro del juego Conecta 4.
@@ -22,18 +27,26 @@ public interface Command {
      *  - La columna seleccionada.
      *  - La fila donde finalmente se colocó la ficha.
      *
+=======
+public interface Command {
+    /**
+     * Ejecuta el comando y devuelve el movimiento realizado.
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
      * @return Move con la información del jugador, columna y fila aplicada.
      */
     Move execute();
 
     /**
      * Revierte el comando (deshace el movimiento).
+<<<<<<< HEAD
      *
      * Este método permite eliminar la última ficha colocada,
      * devolviendo el tablero al estado anterior. Es útil para:
      *  - Funcionalidad de "deshacer" en la interfaz.
      *  - Algoritmos de inteligencia artificial que prueban
      *    diferentes jugadas y necesitan retroceder.
+=======
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
      */
     void undo();
 }

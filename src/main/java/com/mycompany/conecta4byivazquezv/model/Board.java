@@ -16,10 +16,16 @@ public final class Board {
      * Constructor: inicializa todas las celdas como vacías.
      */
     public Board() {
+<<<<<<< HEAD
         // Usamos nombres más expresivos: row y cell
         for (int row = 0; row < ROWS; row++) {
             for (int cell = 0; cell < COLS; cell++) {
                 grid[row][cell] = new Cell();
+=======
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                grid[r][c] = new Cell();
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
             }
         }
     }
@@ -41,11 +47,18 @@ public final class Board {
      * @throws IllegalStateException si la columna está llena
      */
     public int dropDisc(int col, DiscColor color) {
+<<<<<<< HEAD
         // Recorremos desde la última fila hacia arriba
         for (int row = ROWS - 1; row >= 0; row--) {
             if (grid[row][col].isEmpty()) {
                 grid[row][col].setColor(color);
                 return row;
+=======
+        for (int r = ROWS - 1; r >= 0; r--) {
+            if (grid[r][col].isEmpty()) {
+                grid[r][col].setColor(color);
+                return r;
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
             }
         }
         throw new IllegalStateException("Columna llena");
@@ -57,9 +70,15 @@ public final class Board {
      * @throws IllegalStateException si la columna está vacía
      */
     public void removeDisc(int col) {
+<<<<<<< HEAD
         for (int row = 0; row < ROWS; row++) {
             if (!grid[row][col].isEmpty()) {
                 grid[row][col].setColor(DiscColor.NONE);
+=======
+        for (int r = 0; r < ROWS; r++) {
+            if (!grid[r][col].isEmpty()) {
+                grid[r][col].setColor(DiscColor.NONE);
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
                 return;
             }
         }
@@ -74,6 +93,7 @@ public final class Board {
         return grid;
     }
 
+<<<<<<< HEAD
     /**
      * Comprueba si el tablero está lleno (sin columnas disponibles).
      * @return true si todas las columnas están llenas, false en caso contrario
@@ -89,13 +109,38 @@ public final class Board {
     }
 
     /**
+=======
+/**
+ * Comprueba si el tablero está lleno (sin columnas disponibles).
+ * @return true si todas las columnas están llenas, false en caso contrario
+ */
+public boolean isFull() {
+    for (int c = 0; c < COLS; c++) {
+        if (!isColumnFull(c)) {
+            return false; // encontramos una columna con espacio
+        }
+    }
+    return true; // todas las columnas están llenas
+}
+
+     /**
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
      * Limpia el tablero, dejando todas las celdas vacías.
      */
     public void clear() {
         for (int row = 0; row < ROWS; row++) {
+<<<<<<< HEAD
             for (int cell = 0; cell < COLS; cell++) {
                 grid[row][cell] = new Cell(); // crea celda vacía
             }
         }
     }
+=======
+            for (int col = 0; col < COLS; col++) {
+                grid[row][col] = new Cell(); // crea celda vacía
+            }
+        }
+    }
+
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
 }

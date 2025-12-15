@@ -19,7 +19,11 @@ public final class MinimaxStrategy implements Strategy {
 
     // Profundidad máxima de búsqueda en el árbol de jugadas
     private final int maxDepth;
+<<<<<<< HEAD
     // Motor de reglas que evalúa victorias, derrotas o empates
+=======
+    // Motor de reglas que evalúa si hay victoria, derrota o empate
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     private final RuleEngine rules = new RuleEngine();
     // Generador aleatorio para elegir entre jugadas con la misma puntuación
     private final Random random = new Random();
@@ -40,12 +44,20 @@ public final class MinimaxStrategy implements Strategy {
 
         // Recorremos todas las columnas del tablero
         for (int column = 0; column < Board.COLS; column++) {
+<<<<<<< HEAD
             if (!board.isColumnFull(column)) {       // Solo columnas no llenas
                 board.dropDisc(column, player.getColor()); // Simula jugada de la IA
+=======
+            // Solo consideramos columnas que no estén llenas
+            if (!board.isColumnFull(column)) {
+                // Simulamos colocar la ficha del jugador en esa columna
+                board.dropDisc(column, player.getColor());
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
 
                 // Evaluamos la jugada con minimax (profundidad reducida en 1)
                 int score = minimax(board, maxDepth - 1, false, player.getColor());
 
+<<<<<<< HEAD
                 board.removeDisc(column);            // Deshacemos la jugada simulada
 
                 // Actualizamos mejor jugada si la puntuación es superior
@@ -55,6 +67,19 @@ public final class MinimaxStrategy implements Strategy {
                     bestMoves.add(column);           // Añadimos esta columna
                 } else if (score == bestScore) {
                     bestMoves.add(column);           // Empate → añadimos también
+=======
+                // Deshacemos la jugada simulada
+                board.removeDisc(column);
+
+                // Si la puntuación es mejor que la actual, actualizamos
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMoves.clear();      // Limpiamos lista de mejores jugadas
+                    bestMoves.add(column);  // Añadimos esta columna como mejor
+                } else if (score == bestScore) {
+                    // Si la puntuación es igual, añadimos la columna como empate
+                    bestMoves.add(column);
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
                 }
             }
         }
@@ -81,24 +106,43 @@ public final class MinimaxStrategy implements Strategy {
             }
         }
 
+<<<<<<< HEAD
         // Si llegamos a la profundidad máxima o el tablero está lleno → evaluación heurística
+=======
+        // Si llegamos a la profundidad máxima o el tablero está lleno, evaluamos heurísticamente
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
         if (depth == 0 || isBoardFull(board)) {
             return evaluateBoard(board, aiColor);
         }
 
         // Inicializamos el mejor valor según si maximizamos o minimizamos
         int bestValue = maximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+<<<<<<< HEAD
         // Determinamos de quién es el turno
+=======
+        // Determinamos de quién es el turno (IA u oponente)
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
         DiscColor currentColor = maximizing ? aiColor : getOpponent(aiColor);
 
         // Recorremos todas las columnas posibles
         for (int column = 0; column < Board.COLS; column++) {
             if (!board.isColumnFull(column)) {
+<<<<<<< HEAD
                 board.dropDisc(column, currentColor); // Simula jugada
 
                 int eval = minimax(board, depth - 1, !maximizing, aiColor); // Llamada recursiva
 
                 board.removeDisc(column);             // Revierte jugada
+=======
+                // Simulamos colocar ficha
+                board.dropDisc(column, currentColor);
+
+                // Llamada recursiva alternando maximizing/minimizing
+                int eval = minimax(board, depth - 1, !maximizing, aiColor);
+
+                // Deshacemos jugada
+                board.removeDisc(column);
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
 
                 // Actualizamos mejor valor según si maximizamos o minimizamos
                 bestValue = maximizing ? Math.max(bestValue, eval) : Math.min(bestValue, eval);
@@ -131,8 +175,14 @@ public final class MinimaxStrategy implements Strategy {
         // Recorremos todas las filas y columnas
         for (int row = 0; row < Board.ROWS; row++) {
             for (int column = 0; column < Board.COLS; column++) {
+<<<<<<< HEAD
                 if (grid[row][column].getColor() == aiColor) {
                     score += 1; // Cada ficha propia suma 1
+=======
+                // Si la celda pertenece a la IA, sumamos 1
+                if (grid[row][column].getColor() == aiColor) {
+                    score += 1;
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
                 }
             }
         }
@@ -142,7 +192,11 @@ public final class MinimaxStrategy implements Strategy {
             for (int column = 0; column < Board.COLS - 1; column++) {
                 if (grid[row][column].getColor() == aiColor &&
                     grid[row][column + 1].getColor() == aiColor) {
+<<<<<<< HEAD
                     score += 2; // Dos fichas consecutivas horizontales suman 2
+=======
+                    score += 2;
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
                 }
             }
         }
@@ -152,7 +206,11 @@ public final class MinimaxStrategy implements Strategy {
             for (int row = 0; row < Board.ROWS - 1; row++) {
                 if (grid[row][column].getColor() == aiColor &&
                     grid[row + 1][column].getColor() == aiColor) {
+<<<<<<< HEAD
                     score += 2; // Dos fichas consecutivas verticales suman 2
+=======
+                    score += 2;
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
                 }
             }
         }

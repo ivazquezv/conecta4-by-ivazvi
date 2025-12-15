@@ -11,14 +11,21 @@ import com.mycompany.conecta4byivazquezv.model.GameResult;
  * delega en la siguiente regla de la cadena.
  */
 public abstract class BaseWinRule implements WinRule {
+<<<<<<< HEAD
     private WinRule next;// Referencia a la siguiente regla en la cadena
+=======
+    private WinRule next;
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
 
     /**
      * Establece la siguiente regla en la cadena.
      * Respeta la firma de la interfaz (void).
      */
     @Override
+<<<<<<< HEAD
     //El método setNext permite encadenar reglas de forma secuencial.
+=======
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     public void setNext(WinRule next) {
         this.next = next;
     }
@@ -40,6 +47,7 @@ public abstract class BaseWinRule implements WinRule {
         return next != null;
     }
 
+<<<<<<< HEAD
    /**
  * Llama a la siguiente regla en la cadena si existe.
  * Si no hay más reglas, devuelve IN_PROGRESS.
@@ -58,4 +66,13 @@ protected GameResult next(Board board, DiscColor color, int row, int col) {
     return (next == null) ? GameResult.IN_PROGRESS : next.evaluate(board, color, row, col);
 }
 
+=======
+    /**
+     * Llama a la siguiente regla en la cadena si existe.
+     * Si no hay más reglas, devuelve IN_PROGRESS.
+     */
+    protected GameResult next(Board board, DiscColor color, int row, int col) {
+        return (next == null) ? GameResult.IN_PROGRESS : next.evaluate(board, color, row, col);
+    }
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
 }

@@ -19,9 +19,12 @@ public final class Player {
 
     /**
      * Constructor para jugadores humanos (sin estrategia).
+<<<<<<< HEAD
      * Si no se pasa nombre, se asigna uno por defecto según el color.
      * Ejemplo: "Jugador Rojo" o "Jugador Amarillo".
      *
+=======
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
      * @param name nombre del jugador
      * @param color color de las fichas asignadas
      */
@@ -30,14 +33,22 @@ public final class Player {
                 ? (color == DiscColor.RED ? "Jugador Rojo" : "Jugador Amarillo")
                 : name;
         this.color = color;
+<<<<<<< HEAD
         this.ai = false;        // es humano
         this.strategy = null;   // no tiene estrategia de IA
+=======
+        this.ai = false;
+        this.strategy = null;
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     }
 
     /**
      * Constructor para jugadores IA (con estrategia).
+<<<<<<< HEAD
      * Si no se pasa nombre, se asigna uno por defecto: "Bot Rojo" o "Bot Amarillo".
      *
+=======
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
      * @param name nombre del jugador
      * @param color color de las fichas asignadas
      * @param strategy estrategia de IA que utilizará
@@ -47,8 +58,13 @@ public final class Player {
                 ? "Bot " + (color == DiscColor.RED ? "Rojo" : "Amarillo")
                 : name;
         this.color = color;
+<<<<<<< HEAD
         this.ai = true;         // es IA
         this.strategy = strategy; // se le asigna una estrategia
+=======
+        this.ai = true;
+        this.strategy = strategy;
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     }
 
     /** Devuelve el nombre del jugador. */

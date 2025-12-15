@@ -8,6 +8,7 @@ import com.mycompany.conecta4byivazquezv.ai.RandomStrategy;
 
 /**
  * Fábrica para crear instancias de Player.
+<<<<<<< HEAD
  * Aplica el patrón Factory Method para encapsular la lógica de inicialización
  * de jugadores humanos o IA, evitando duplicar código en otras partes.
  */
@@ -15,6 +16,12 @@ public final class PlayerFactory {
 
     // Constructor privado: evita que se instancie la clase directamente.
     // Solo se usan sus métodos estáticos.
+=======
+ * Permite encapsular la lógica de inicialización de jugadores humanos o IA.
+ */
+public final class PlayerFactory {
+
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     private PlayerFactory() {
         // Evita instanciación
     }
@@ -27,7 +34,11 @@ public final class PlayerFactory {
      * @return instancia de Player humano
      */
     public static Player createHuman(String name, DiscColor color) {
+<<<<<<< HEAD
         return new Player(name, color); // usa el constructor de jugadores humanos
+=======
+        return new Player(name, color); // constructor humano
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
     }
 
     /**
@@ -35,6 +46,7 @@ public final class PlayerFactory {
      *
      * @param name nombre del jugador IA
      * @param color color de la ficha
+<<<<<<< HEAD
      * @param nivelIA nivel de dificultad (profundidad del algoritmo Minimax)
      * @return instancia de Player IA con estrategia Minimax
      */
@@ -42,6 +54,12 @@ public final class PlayerFactory {
         // Aquí se podría usar nivelIA para ajustar la profundidad del Minimax.
         // En este ejemplo está fijo en 4, pero se puede parametrizar fácilmente.
         Strategy strategy = new MinimaxStrategy(4);
+=======
+     * @return instancia de Player IA con estrategia Minimax
+     */
+    public static Player createAI(String name, DiscColor color, int nivelIA) {
+        Strategy strategy = new MinimaxStrategy(4); // profundidad configurable
+>>>>>>> c40613905afa72172cf579325da90ebf647682ad
         return new Player(name, color, strategy);
     }
 
