@@ -8,23 +8,24 @@ import com.mycompany.conecta4byivazquezv.ai.Strategy;
  * Si es IA, se le asigna una estrategia para decidir sus jugadas.
  */
 public final class Player {
+
     // Nombre del jugador (ej. "Jugador 1", "Bot")
     private final String name;
+
     // Color de las fichas que utiliza (ROJO o AMARILLO)
     private final DiscColor color;
+
     // Indica si el jugador es controlado por la IA (true) o es humano (false)
     private final boolean ai;
+
     // Estrategia de IA asociada (solo se usa si ai == true)
     private final Strategy strategy;
 
     /**
      * Constructor para jugadores humanos (sin estrategia).
-<<<<<<< HEAD
      * Si no se pasa nombre, se asigna uno por defecto según el color.
      * Ejemplo: "Jugador Rojo" o "Jugador Amarillo".
      *
-=======
->>>>>>> c40613905afa72172cf579325da90ebf647682ad
      * @param name nombre del jugador
      * @param color color de las fichas asignadas
      */
@@ -33,22 +34,14 @@ public final class Player {
                 ? (color == DiscColor.RED ? "Jugador Rojo" : "Jugador Amarillo")
                 : name;
         this.color = color;
-<<<<<<< HEAD
         this.ai = false;        // es humano
         this.strategy = null;   // no tiene estrategia de IA
-=======
-        this.ai = false;
-        this.strategy = null;
->>>>>>> c40613905afa72172cf579325da90ebf647682ad
     }
 
     /**
      * Constructor para jugadores IA (con estrategia).
-<<<<<<< HEAD
      * Si no se pasa nombre, se asigna uno por defecto: "Bot Rojo" o "Bot Amarillo".
      *
-=======
->>>>>>> c40613905afa72172cf579325da90ebf647682ad
      * @param name nombre del jugador
      * @param color color de las fichas asignadas
      * @param strategy estrategia de IA que utilizará
@@ -58,28 +51,23 @@ public final class Player {
                 ? "Bot " + (color == DiscColor.RED ? "Rojo" : "Amarillo")
                 : name;
         this.color = color;
-<<<<<<< HEAD
-        this.ai = true;         // es IA
+        this.ai = true;          // es IA
         this.strategy = strategy; // se le asigna una estrategia
-=======
-        this.ai = true;
-        this.strategy = strategy;
->>>>>>> c40613905afa72172cf579325da90ebf647682ad
     }
 
     /** Devuelve el nombre del jugador. */
-    public String getName() { 
-        return name; 
+    public String getName() {
+        return name;
     }
 
     /** Devuelve el color de las fichas del jugador. */
-    public DiscColor getColor() { 
-        return color; 
+    public DiscColor getColor() {
+        return color;
     }
 
     /** Indica si el jugador es IA. */
-    public boolean isAi() { 
-        return ai; 
+    public boolean isAi() {
+        return ai;
     }
 
     /** Devuelve la estrategia asociada al jugador IA (o null si es humano). */

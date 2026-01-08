@@ -10,6 +10,8 @@ import com.mycompany.conecta4byivazquezv.model.GameResult;
  * condiciones de victoria en orden: horizontal → vertical → diagonal.
  */
 public final class RuleEngine {
+
+    // Primera regla de la cadena
     private final WinRule chain;
 
     public RuleEngine() {
