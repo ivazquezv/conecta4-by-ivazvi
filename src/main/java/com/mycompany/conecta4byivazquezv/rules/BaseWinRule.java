@@ -19,7 +19,9 @@ public abstract class BaseWinRule implements WinRule {
      * Establece la siguiente regla en la cadena.
      * Respeta la firma de la interfaz (void).
      * El método setNext permite encadenar reglas de forma secuencial.
+     * @param next
      */
+    @Override
     public void setNext(WinRule next) {
         this.next = next;
     }
@@ -27,6 +29,8 @@ public abstract class BaseWinRule implements WinRule {
     /**
      * Método auxiliar para encadenamiento fluido sin romper la interfaz.
      * Permite escribir: rule1.then(rule2).then(rule3);
+     * @param next
+     * @return 
      */
     public WinRule then(WinRule next) {
         this.next = next;

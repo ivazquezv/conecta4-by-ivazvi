@@ -1,8 +1,8 @@
 package com.mycompany.conecta4byivazquezv.view;
 
-import com.mycompany.conecta4byivazquezv.model.Board;     // Modelo del tablero
-import com.mycompany.conecta4byivazquezv.model.DiscColor; // Enum con los colores de las fichas
-import java.util.Scanner;                                // Para leer entrada del usuario
+import com.mycompany.conecta4byivazquezv.model.Board;
+import com.mycompany.conecta4byivazquezv.model.DiscColor;
+import java.util.Scanner;
 
 /**
  * Vista en consola para el juego Conecta4.
@@ -10,49 +10,38 @@ import java.util.Scanner;                                // Para leer entrada de
  */
 public final class TerminalView {
 
-    // Scanner para leer entrada del usuario desde consola
     private final Scanner scanner = new Scanner(System.in);
 
-    // Códigos ANSI para aplicar colores en la consola
-    private static final String ANSI_RESET  = "\u001B[0m";  // Restablece color por defecto
-    private static final String ANSI_RED    = "\u001B[31m"; // Texto rojo
-    private static final String ANSI_YELLOW = "\u001B[33m"; // Texto amarillo
+    private static final String ANSI_RESET  = "\u001B[0m";
+    private static final String ANSI_RED    = "\u001B[31m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
 
     /**
      * Muestra el tablero en consola con colores ANSI.
-     * Cada celda se representa como:
-     * - "O" en rojo para fichas rojas
-     * - "X" en amarillo para fichas amarillas
-     * - "_" para celdas vacías (útil para visualizar undo/redo)
-     *
-     * @param board tablero actual
+     * @param board
      */
     public void printBoard(Board board) {
         System.out.println("\n   === TABLERO CONECTA4 ===");
 
-        // Recorremos todas las filas del tablero
         for (int r = 0; r < Board.ROWS; r++) {
-            System.out.print("|"); // separador de inicio de fila
+            System.out.print("|");
 
             for (int c = 0; c < Board.COLS; c++) {
-                DiscColor color = board.getGrid()[r][c].getColor();
 
-                // Asignamos símbolo según el color de la celda
-                // Dejo la celda vacía con "_" para visualizar mejor el controller de redo y undo
+                DiscColor color = board.getCellColor(r, c);
+
                 String symbol = switch (color) {
-                    case RED    -> ANSI_RED + "O" + ANSI_RESET;       // Ficha roja
-                    case YELLOW -> ANSI_YELLOW + "X" + ANSI_RESET;    // Ficha amarilla
-                    default     -> "_";                               // Celda vacía
+                    case RED    -> ANSI_RED + "O" + ANSI_RESET;
+                    case YELLOW -> ANSI_YELLOW + "X" + ANSI_RESET;
+                    default     -> "_";
                 };
 
-                // Imprimimos celda con separadores
                 System.out.print(" " + symbol + " |");
             }
 
-            System.out.println(); // salto de línea al final de cada fila
+            System.out.println();
         }
 
-        // Línea inferior con índices de columnas para referencia del jugador
         System.out.print("   ");
         for (int c = 0; c < Board.COLS; c++) {
             System.out.print(" " + c + "  ");
@@ -62,10 +51,9 @@ public final class TerminalView {
 
     /**
      * Solicita entrada al usuario mostrando un mensaje en consola.
-     * @param message mensaje que se muestra al usuario
-     * @return texto introducido por el usuario
+     * @param message
+     * @return 
      */
-    // El método prompt muestra un mensaje y espera la entrada del usuario.
     public String prompt(String message) {
         System.out.print(message);
         return scanner.nextLine();
@@ -73,7 +61,7 @@ public final class TerminalView {
 
     /**
      * Imprime un mensaje en consola con salto de línea.
-     * @param message texto a mostrar
+     * @param message
      */
     public void println(String message) {
         System.out.println(message);

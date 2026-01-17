@@ -18,51 +18,42 @@ import com.mycompany.conecta4byivazquezv.view.TerminalView;
  */
 public final class GameController {
 
-    // Constantes especiales para representar acciones de control
-    private static final int UNDO_CODE = -2; // código para deshacer jugada
-    private static final int REDO_CODE = -3; // código para rehacer jugada
+    private static final int UNDO_CODE = -2;
+    private static final int REDO_CODE = -3;
 
-    // Componentes principales del juego
-    private final Board board = new Board();             // Tablero del juego
-    private final RuleEngine rules = new RuleEngine();   // Motor de reglas (evalúa victorias/empates)
-    private final TerminalView view = new TerminalView();// Vista en consola
-    private final CommandHistory history = new CommandHistory(); // Historial de comandos (undo/redo)
-    private final Ranking ranking = new Ranking();       // Ranking acumulado de partidas
+    private final Board board = new Board();
+    private final RuleEngine rules = new RuleEngine();
+    private final TerminalView view = new TerminalView();
+    private final CommandHistory history = new CommandHistory();
+    private final Ranking ranking = new Ranking();
 
-    // Jugadores
-    private Player current; // Jugador en turno
-    private Player p1;      // Jugador 1
-    private Player p2;      // Jugador 2
+    private Player current;
+    private Player p1;
+    private Player p2;
 
-    /**
-     * Inicia la partida entre dos jugadores (humanos o IA).
-     */
     public void start(Player p1, Player p2) {
         this.p1 = p1;
         this.p2 = p2;
 
         boolean seguirJugando = true;
 
-        // Bucle para jugar varias partidas seguidas
         while (seguirJugando) {
-            long startTime = System.currentTimeMillis(); // Marca inicio de la partida
+            long startTime = System.currentTimeMillis();
 
-            this.current = p1; // Siempre comienza el jugador 1
-            board.clear();     // Reinicia tablero vacío
-            history.clear();   // Limpia historial de jugadas
-            GameResult result = GameResult.IN_PROGRESS; // Estado inicial
+            this.current = p1;
+            board.clear();
+            history.clear();
+            GameResult result = GameResult.IN_PROGRESS;
 
-            // Bucle principal de la partida
             while (result == GameResult.IN_PROGRESS) {
-                view.printBoard(board); // Muestra tablero en consola
+                view.printBoard(board);
 
-                int col = getColumnFromPlayer(current); // Obtiene columna elegida
+                int col = getColumnFromPlayer(current);
 
-                // --- Gestión de acciones especiales (undo/redo) ---
                 if (col == UNDO_CODE) {
                     if (history.canUndo()) {
-                        history.undo();            // Deshace última jugada
-                        current = toggle(current); // Cambia turno atrás
+                        history.undo();
+                        current = toggle(current);
                         view.println("<< Acción deshecha.");
                     } else {
                         view.println("No hay movimientos para deshacer.");
@@ -72,8 +63,8 @@ public final class GameController {
 
                 if (col == REDO_CODE) {
                     if (history.canRedo()) {
-                        history.redo();            // Rehace jugada deshecha
-                        current = toggle(current); // Cambia turno adelante
+                        history.redo();
+                        current = toggle(current);
                         view.println("Acción rehecha.>>");
                     } else {
                         view.println("No hay movimientos para rehacer.");
@@ -81,70 +72,57 @@ public final class GameController {
                     continue;
                 }
 
-                // --- Validación de movimiento ---
                 if (!isValidMove(col)) {
                     view.println("Movimiento inválido. Intenta de nuevo.");
                     continue;
                 }
 
-                // --- Aplicar jugada usando patrón Command ---
                 DropDiscCommand cmd = new DropDiscCommand(board, current, col);
-                history.execute(cmd); // Ejecuta y guarda en historial
-                Move mv = cmd.getMove(); // Obtiene jugada aplicada
+                history.execute(cmd);
+                Move mv = cmd.getMove();
 
-                // --- Evaluar estado del juego ---
                 result = rules.evaluate(board, current.getColor(),
-                                        mv.getRowApplied(), mv.getColumn());
+                        mv.getRowApplied(), mv.getColumn());
 
                 if (result == GameResult.IN_PROGRESS) {
                     if (board.isFull()) {
-                        result = GameResult.DRAW; // Empate si tablero lleno
+                        result = GameResult.DRAW;
                     } else {
-                        current = toggle(current); // Cambia turno al otro jugador
+                        current = toggle(current);
                     }
                 }
             }
 
-            // --- Fin de partida ---
-            view.printBoard(board);    // Muestra tablero final
-            mostrarResultado(result);  // Muestra mensaje de resultado
+            view.printBoard(board);
+            mostrarResultado(result);
 
-            // --- Registrar resultado en ranking ---
             long duration = System.currentTimeMillis() - startTime;
+
             if (result == GameResult.RED_WINS) {
                 ranking.addResult(new MatchResult(p1.getName(), p1.getColor(), duration));
             } else if (result == GameResult.YELLOW_WINS) {
                 ranking.addResult(new MatchResult(p2.getName(), p2.getColor(), duration));
             }
 
-            // --- Mostrar ranking acumulado ---
-            ranking.printByWins();    // Ranking por victorias
-            ranking.printByFastest(); // Ranking por partidas más rápidas
+            mostrarRanking();
 
-            // --- Preguntar si se quiere jugar otra partida ---
             String respuesta;
             do {
                 respuesta = view.prompt("¿Quieres jugar otra partida? (s/n): ")
-                                .trim().toLowerCase();
+                        .trim().toLowerCase();
                 if (!respuesta.equals("s") && !respuesta.equals("n")) {
-                    view.println("Entrada no válida. Debes escribir 's' para sí o 'n' para no.");
+                    view.println("Entrada no válida. Debes escribir 's' o 'n'.");
                 }
             } while (!respuesta.equals("s") && !respuesta.equals("n"));
 
-            // --- Decisión de continuar ---
-            if (respuesta.equals("s")) {
-                seguirJugando = true;
-            } else {
-                seguirJugando = false;
+            seguirJugando = respuesta.equals("s");
+
+            if (!seguirJugando) {
                 view.println("Gracias por jugar Conecta4. ¡Hasta pronto!");
             }
         }
     }
 
-    /**
-     * Obtiene la columna elegida por el jugador actual.
-     * Soporta atajos: 'u' -> undo, 'r' -> redo (solo humanos).
-     */
     private int getColumnFromPlayer(Player player) {
         if (player.isAi()) {
             int col = player.getStrategy().chooseColumn(board, player);
@@ -155,38 +133,26 @@ public final class GameController {
                     + " - columna [0-" + (Board.COLS - 1) + "] o 'u' (undo), 'r' (redo): ")
                     .trim();
 
-            // Atajos especiales
             if (input.equalsIgnoreCase("u")) return UNDO_CODE;
             if (input.equalsIgnoreCase("r")) return REDO_CODE;
 
-            // Intentar convertir a número
             try {
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                view.println("Entrada no válida. Debes introducir un número entre 0 y "
-                        + (Board.COLS - 1) + ", o 'u' para deshacer, 'r' para rehacer.");
+                view.println("Entrada no válida. Introduce un número o 'u'/'r'.");
                 return -1;
             }
         }
     }
 
-    /**
-     * Comprueba si un movimiento es válido (columna dentro de rango y no llena).
-     */
     private boolean isValidMove(int col) {
         return col >= 0 && col < Board.COLS && !board.isColumnFull(col);
     }
 
-    /**
-     * Alterna entre jugadores (cambia turno).
-     */
     private Player toggle(Player current) {
         return current == p1 ? p2 : p1;
     }
 
-    /**
-     * Muestra el resultado final de la partida en consola.
-     */
     private void mostrarResultado(GameResult result) {
         switch (result) {
             case RED_WINS ->
@@ -199,5 +165,20 @@ public final class GameController {
             default ->
                 view.println("Partida finalizada.");
         }
+    }
+
+    /**
+     * Nuevo método que imprime el ranking usando la vista.
+     */
+    private void mostrarRanking() {
+        view.println("\n=== Ranking por número de victorias ===");
+        ranking.getWinsRanking().forEach(entry ->
+                view.println(entry.getKey() + " - " + entry.getValue() + " victorias")
+        );
+
+        view.println("\n=== Ranking por partida más rápida ===");
+        ranking.getByFastest().forEach(result ->
+                view.println(result.toString())
+        );
     }
 }

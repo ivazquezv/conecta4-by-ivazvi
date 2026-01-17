@@ -9,30 +9,29 @@ import com.mycompany.conecta4byivazquezv.model.GameResult;
  */
 public final class HorizontalWinRule extends BaseWinRule {
 
+    @Override
     public GameResult evaluate(Board board, DiscColor color, int row, int col) {
         int consecutiveCount = 0;
 
-        // Recorremos todas las columnas de la fila indicada (row)
+        // Recorremos todas las columnas de la fila indicada
         for (int currentCol = 0; currentCol < Board.COLS; currentCol++) {
 
-            // Si la celda tiene el mismo color que la ficha recién colocada
-            if (board.getGrid()[row][currentCol].getColor() == color) {
-                consecutiveCount++; // sumamos al contador
+            // Comprobamos el color de la celda usando encapsulación correcta
+            if (board.getCellColor(row, currentCol) == color) {
+
+                consecutiveCount++;
 
                 if (consecutiveCount >= 4) {
-                    // Si hay 4 o más consecutivas, declaramos victoria
                     return (color == DiscColor.RED)
                             ? GameResult.RED_WINS
                             : GameResult.YELLOW_WINS;
                 }
 
             } else {
-                // Si encontramos otra ficha o vacío, reiniciamos el contador
                 consecutiveCount = 0;
             }
         }
 
-        // Si no hay victoria horizontal, pasamos la comprobación a la siguiente regla
         return next(board, color, row, col);
     }
 }

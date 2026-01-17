@@ -1,23 +1,35 @@
 package com.mycompany.conecta4byivazquezv;
 
-import com.mycompany.conecta4byivazquezv.controller.GameController; // Controla el flujo del juego
-import com.mycompany.conecta4byivazquezv.controller.GameSetup;     // Configura los jugadores antes de empezar
-import com.mycompany.conecta4byivazquezv.model.Player;             // Representa a cada jugador
+import com.mycompany.conecta4byivazquezv.controller.GameController; 
+import com.mycompany.conecta4byivazquezv.controller.GameSetup;     
+import com.mycompany.conecta4byivazquezv.model.Player;             
 
 public class Conecta4byivazquezv {
 
+    /**
+     * Punto de entrada del programa.
+     * Solo arranca el juego llamando a play().
+     * @param args
+     */
     public static void main(String[] args) {
+        new Conecta4byivazquezv().play();
+    }
 
-        // 1. Creamos un objeto GameSetup para configurar los jugadores
+    /**
+     * Método que contiene la lógica principal para iniciar el juego.
+     * Este es el método que debería usarse si alguien quiere ejecutar el juego
+     * desde otra clase o desde tests.
+     */
+    public void play() {
+
+        // 1. Configuramos los jugadores
         GameSetup setup = new GameSetup();
-       
-        // 2. Llamamos a configurePlayers() que devuelve un array con los dos jugadores listos
         Player[] players = setup.configurePlayers();
 
-        // 3. Creamos el controlador del juego, encargado de gestionar la partida
+        // 2. Creamos el controlador del juego
         GameController controller = new GameController();
-       
-        // 4. Iniciamos el juego pasando los dos jugadores al controlador
+
+        // 3. Iniciamos la partida
         controller.start(players[0], players[1]);
     }
 }

@@ -6,29 +6,26 @@ package com.mycompany.conecta4byivazquezv.model;
  */
 public final class Board {
 
-    // Constantes que definen el tamaño del tablero
     public static final int ROWS = 6;
     public static final int COLS = 7;
 
-    // Matriz de celdas que almacena el estado del tablero
     private final Cell[][] grid = new Cell[ROWS][COLS];
 
     /**
      * Constructor: inicializa todas las celdas como vacías.
      */
     public Board() {
-        // Usamos nombres más expresivos: row y cell
         for (int row = 0; row < ROWS; row++) {
-            for (int cell = 0; cell < COLS; cell++) {
-                grid[row][cell] = new Cell();
+            for (int col = 0; col < COLS; col++) {
+                grid[row][col] = new Cell();
             }
         }
     }
 
     /**
      * Comprueba si una columna está llena.
-     * @param col índice de columna
-     * @return true si la columna está llena, false si aún tiene espacio
+     * @param col
+     * @return 
      */
     public boolean isColumnFull(int col) {
         return !grid[0][col].isEmpty();
@@ -36,13 +33,11 @@ public final class Board {
 
     /**
      * Coloca una ficha en la columna indicada, en la posición más baja disponible.
-     * @param col columna donde se coloca la ficha
-     * @param color color de la ficha
-     * @return fila en la que se colocó la ficha
-     * @throws IllegalStateException si la columna está llena
+     * @param col
+     * @param color
+     * @return 
      */
     public int dropDisc(int col, DiscColor color) {
-        // Recorremos desde la última fila hacia arriba
         for (int row = ROWS - 1; row >= 0; row--) {
             if (grid[row][col].isEmpty()) {
                 grid[row][col].setColor(color);
@@ -53,9 +48,8 @@ public final class Board {
     }
 
     /**
-     * Elimina la ficha más alta de una columna (para operaciones de undo).
-     * @param col columna de la que se elimina la ficha
-     * @throws IllegalStateException si la columna está vacía
+     * Elimina la ficha más alta de una columna (para undo).
+     * @param col
      */
     public void removeDisc(int col) {
         for (int row = 0; row < ROWS; row++) {
@@ -68,25 +62,36 @@ public final class Board {
     }
 
     /**
-     * Devuelve la matriz completa del tablero.
-     * @return grid de celdas
+     * Devuelve el color de una celda sin exponer la estructura interna.
+     * @param row
+     * @param col
+     * @return 
      */
-    public Cell[][] getGrid() {
-        return grid;
+    public DiscColor getCellColor(int row, int col) {
+        return grid[row][col].getColor();
     }
 
     /**
-     * Comprueba si el tablero está lleno (sin columnas disponibles).
-     * @return true si todas las columnas están llenas, false en caso contrario
+     * Devuelve una celda concreta (si alguna regla necesita más información).
+     * @param row
+     * @param col
+     * @return 
+     */
+    public Cell getCell(int row, int col) {
+        return grid[row][col];
+    }
+
+    /**
+     * Comprueba si el tablero está lleno.
+     * @return 
      */
     public boolean isFull() {
-        // Usamos cell en lugar de c para mayor claridad
-        for (int cell = 0; cell < COLS; cell++) {
-            if (!isColumnFull(cell)) {
-                return false; // encontramos una columna con espacio
+        for (int col = 0; col < COLS; col++) {
+            if (!isColumnFull(col)) {
+                return false;
             }
         }
-        return true; // todas las columnas están llenas
+        return true;
     }
 
     /**
@@ -94,8 +99,8 @@ public final class Board {
      */
     public void clear() {
         for (int row = 0; row < ROWS; row++) {
-            for (int cell = 0; cell < COLS; cell++) {
-                grid[row][cell] = new Cell(); // crea celda vacía
+            for (int col = 0; col < COLS; col++) {
+                grid[row][col] = new Cell();
             }
         }
     }

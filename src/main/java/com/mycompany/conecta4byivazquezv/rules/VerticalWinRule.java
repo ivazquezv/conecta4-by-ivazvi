@@ -1,8 +1,8 @@
 package com.mycompany.conecta4byivazquezv.rules;
 
-import com.mycompany.conecta4byivazquezv.model.Board;      // Modelo del tablero
-import com.mycompany.conecta4byivazquezv.model.DiscColor;  // Enum con los colores de las fichas
-import com.mycompany.conecta4byivazquezv.model.GameResult; // Resultado posible del juego
+import com.mycompany.conecta4byivazquezv.model.Board;
+import com.mycompany.conecta4byivazquezv.model.DiscColor;
+import com.mycompany.conecta4byivazquezv.model.GameResult;
 
 /**
  * Regla de victoria para comprobar alineaciones verticales en el tablero.
@@ -11,34 +11,30 @@ import com.mycompany.conecta4byivazquezv.model.GameResult; // Resultado posible 
  */
 public final class VerticalWinRule extends BaseWinRule {
 
+    @Override
     public GameResult evaluate(Board board, DiscColor color, int row, int col) {
 
-        int consecutiveCount = 0; // contador de fichas consecutivas del mismo color
+        int consecutiveCount = 0;
 
-        // Recorremos todas las filas de la columna indicada (col)
+        // Recorremos todas las filas de la columna indicada
         for (int currentRow = 0; currentRow < Board.ROWS; currentRow++) {
 
-            // Usamos board.getGrid() para acceder a la matriz interna del tablero
-            // getGrid() devuelve la estructura bidimensional (celda[row][col])
-            // y desde cada celda podemos obtener el color con getColor()
-            if (board.getGrid()[currentRow][col].getColor() == color) {
+            // Acceso encapsulado al color de la celda
+            if (board.getCellColor(currentRow, col) == color) {
 
-                consecutiveCount++; // sumamos si la ficha es del mismo color
+                consecutiveCount++;
 
                 if (consecutiveCount >= 4) {
-                    // Si hay 4 o más consecutivas, declaramos victoria
                     return (color == DiscColor.RED)
                             ? GameResult.RED_WINS
                             : GameResult.YELLOW_WINS;
                 }
 
             } else {
-                // Si encontramos otra ficha o una celda vacía, reiniciamos el contador
                 consecutiveCount = 0;
             }
         }
 
-        // Si no hay victoria vertical, pasamos la comprobación a la siguiente regla en la cadena
         return next(board, color, row, col);
     }
 }
